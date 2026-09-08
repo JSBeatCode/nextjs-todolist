@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "Next.js 프로젝트 구조 이해하기",
+    "completed": true,
+    "createdAt": "2026-08-25T09:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "title": "Server Component와 Client Component 차이 배우기",
+    "completed": false,
+    "createdAt": "2026-08-26T09:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "title": "Server Action으로 todo 저장 흐름 완성하기",
+    "completed": false,
+    "createdAt": "2026-08-27T09:00:00.000Z"
+  }
+]

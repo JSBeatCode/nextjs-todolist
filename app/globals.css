@@ -1,3 +1,10 @@
+/* [1단계 메모]
+ * - 이 파일은 app/layout.tsx에서 import "./globals.css" 로 딱 한 번만 불러옵니다.
+ * - 앱 전체에 적용되는 리셋(margin/padding 초기화)과 다크모드 대응 변수 정도만 여기 둡니다.
+ * - 컴포넌트별 개별 스타일은 9단계에서 CSS Modules(*.module.css)로 분리해서 다룰 예정입니다.
+ *   → globals.css = 전역 규칙 / *.module.css = 컴포넌트 범위 규칙, 이렇게 역할을 나눕니다.
+ */
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

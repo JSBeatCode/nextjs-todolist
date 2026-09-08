@@ -1,69 +1,22 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+// [3단계 메모]
+// - 이 컴포넌트는 async function 입니다. 일반 React 컴포넌트는 async일 수 없지만,
+//   Server Component는 예외적으로 async를 지원합니다 (서버에서만 실행되기 때문).
+//   → Vue2의 mixin에서 created()에 await axios.get(...) 하던 패턴이,
+//      여기선 컴포넌트 함수 자체에서 그냥 await로 끝나는 셈입니다. 별도 loading 상태
+//      변수를 직접 관리할 필요가 없습니다 (loading UI는 9단계 loading.tsx에서 다룹니다).
+// - getTodos()는 lib/data.ts -> lib/db.ts를 거쳐 서버의 파일 시스템(db.json)을 읽습니다.
+//   이 코드는 브라우저에서 절대 실행되지 않고, 결과 HTML만 브라우저로 전달됩니다.
 
-export default function Home() {
+import { getTodos } from "@/lib/data";
+import TodoList from "@/components/TodoList";
+
+export default async function Home() {
+  const todos = await getTodos();
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main>
+      <h1>Todo App</h1>
+      <TodoList todos={todos} />
+    </main>
   );
 }
