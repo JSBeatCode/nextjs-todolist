@@ -9,6 +9,7 @@
 
 import { getTodos } from "@/lib/data";
 import TodoList from "@/components/TodoList";
+import AddTodoForm from '@/components/AddTodoForm'
 
 export default async function Home() {
   const todos = await getTodos();
@@ -16,6 +17,7 @@ export default async function Home() {
   return (
     <main>
       <h1>Todo App</h1>
+      <AddTodoForm />
       <TodoList todos={todos} />
     </main>
   );

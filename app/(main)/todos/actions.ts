@@ -15,9 +15,14 @@ import { readTodos, writeTodos } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import type { Todo } from "@/lib/types";
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 // 새 todo 추가.
 // <form action={addTodo}> 형태로 쓰이므로 첫 인자로 FormData를 받습니다.
 export async function addTodo(formData: FormData): Promise<void> {
+
+  await delay(2000);
+
   const title = (formData.get("title") as string | null)?.trim();
   if (!title) {
     // 빈 값 제출은 조용히 무시. (사용자 입력 검증 UI는 이번 단계 범위 밖)

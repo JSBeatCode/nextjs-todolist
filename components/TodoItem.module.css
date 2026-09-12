@@ -7,25 +7,39 @@
  *   styles.item 형태로 참조합니다. 문자열 "item"이 아니라 변환된 고유 클래스명이 실제로 붙습니다.
  */
 
+/* 할 일(Todo) 개별 아이템 행 컨테이너 */
 .item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  display: flex;          /* 자식 요소(체크박스, 텍스트 등)를 가로(행) 방향으로 배치 */
+  align-items: center;    /* 수직 방향 정렬을 중앙으로 맞춤 */
+  gap: 8px;               /* 내부 자식 요소들 사이의 간격을 8px로 설정 */
+  padding: 8px 0;         /* 위아래 내부 여백 8px, 좌우 여백 0px 지정 */
+  border-bottom: 1px solid #eee; /* 하단에 1px 두께의 연한 회색 실선 구분선 추가 */
 }
 
+/* 완료 여부 체크박스 */
 .checkbox {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
+  width: 16px;            /* 체크박스 가로 너비를 16px로 고정 */
+  height: 16px;           /* 체크박스 세로 높이를 16px로 고정 */
+  cursor: pointer;        /* 마우스를 올렸을 때 클릭 가능한 손가락 모양 커서 표시 */
 }
 
+/* 할 일 기본 텍스트 제목 */
 .title {
-  color: var(--foreground);
+  color: var(--foreground); /* CSS 변수(--foreground)를 사용하여 기본 전역 글자색 적용 */
 }
 
+/* 할 일 완료 상태의 텍스트 제목 */
 .titleDone {
-  color: #999;
-  text-decoration: line-through;
+  color: #999;                   /* 완료된 항목의 글자색을 회색(#999)으로 변경 */
+  text-decoration: line-through; /* 글자 중앙에 취소선(중앙 횡단선)을 표시 */
+}
+
+/* 삭제 버튼 */
+.deleteButton {
+  margin-left: auto;        /* Flex 컨테이너 내에서 오른쪽 끝으로 요소를 밀어냄 */
+  border: none;             /* 기본 테두리 제거 */
+  background: transparent;  /* 배경색을 투명하게 설정 */
+  color: #d33;              /* 글자 색상을 붉은색(#d33)으로 지정 */
+  cursor: pointer;          /* 마우스를 올렸을 때 클릭 가능한 손가락 모양 커서 표시 */
+  font-size: 0.85rem;       /* 폰트 크기를 기본 루트 크기의 85% 비율로 설정 */
 }

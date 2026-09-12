@@ -1,0 +1,31 @@
+/* 폼 컨테이너: 입력창과 버튼을 가로로 배치하는 영역 */
+.form {
+  display: flex;        /* Flexbox 레이아웃을 사용하여 자식 요소들을 가로로 정렬 */
+  gap: 8px;             /* 자식 요소(input, button) 사이의 간격을 8px로 설정 */
+  margin-bottom: 16px;  /* 폼 아래쪽에 16px의 여백 추가 */
+}
+
+/* 텍스트 입력창 */
+.input {
+  flex: 1;              /* 남은 가로 공간을 꽉 채우도록 비율(1)을 부여 */
+  padding: 8px 12px;    /* 내부 여백 (상하 8px, 좌우 12px) */
+  border: 1px solid #ccc; /* 1px 두께의 연한 회색 실선 테두리 */
+  border-radius: 6px;   /* 테두리 모서리를 6px만큼 둥글게 처리 */
+  font-size: 1rem;      /* 폰트 크기를 기본 루트 크기(1rem = 보통 16px)로 설정 */
+}
+
+/* 제출 버튼 */
+.button {
+  padding: 8px 16px;    /* 내부 여백 (상하 8px, 좌우 16px) */
+  border: none;         /* 기본 테두리 제거 */
+  border-radius: 6px;   /* 테두리 모서리를 6px만큼 둥글게 처리 */
+  background: #171717;  /* 배경색을 진한 검은색(#171717)으로 지정 */
+  color: white;         /* 글자 색상을 하얀색으로 지정 */
+  cursor: pointer;      /* 마우스를 올렸을 때 손가락 모양 커서로 변경 */
+}
+
+/* 버튼 비활성화 상태 (disabled 속성이 적용되었을 때) */
+.button:disabled {
+  opacity: 0.5;         /* 투명도를 50%로 낮춰 비활성화된 느낌을 줌 */
+  cursor: not-allowed;  /* 마우스를 올렸을 때 금지 모양 커서(🚫)로 변경 */
+}

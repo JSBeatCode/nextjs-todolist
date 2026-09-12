@@ -1,18 +1,16 @@
 "use client";
-// [4단계 메모]
-// - 파일 최상단의 "use client" 지시어가 핵심입니다.
-//   이걸 붙이는 순간 이 컴포넌트(와 그 안에서 쓰는 함수들)는 브라우저 번들에 포함되고,
-//   브라우저에서 실행됩니다. useState, onClick 같은 "상호작용"은 Client Component에서만 가능합니다.
-// - 반대로 3단계에서 만든 TodoList.tsx는 "use client"가 없으므로 여전히 Server Component입니다.
-//   → 하나의 화면 안에 Server Component(TodoList)와 Client Component(TodoItem)가 공존합니다.
-//   이게 App Router의 핵심 패턴입니다: "상호작용이 필요한 최소 단위만 Client로 내린다."
-// - 지금 체크박스를 클릭하면 화면은 바뀌지만, 새로고침하면 원래 상태로 돌아옵니다.
-//   왜냐하면 이 useState는 "이 컴포넌트 안에서만" 기억되는 로컬 상태이고,
-//   서버의 db.json에는 아직 반영되지 않기 때문입니다.
-//   → 실제로 서버에 저장하는 로직(Server Action)은 5단계에서 연결합니다.
+// [5단계 메모]
+// - 4단계에서는 체크박스가 로컬 state만 바꾸고 새로고침하면 원상복구됐습니다.
+//   이제 toggleTodo(Server Action)를 실제로 호출해서 db.json에도 반영합니다.
+// - Server Action(toggleTodo, deleteTodo)을 Client Component 안에서 그냥 일반 함수처럼
+//   import해서 호출할 수 있다는 게 포인트입니다.
+// - useTransition으로 감싼 이유: 서버 응답을 기다리는 동안 UI가 멈추지 않게 하고,
+//   isPending으로 "처리 중" 상태를 표시하기 위함입니다.
+// - 먼저 setCompleted로 화면을 낙관적으로(optimistic) 바꾸고, 그 다음 서버에 반영합니다.
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { Todo } from "@/lib/types";
+import { toggleTodo, deleteTodo } from "@/app/(main)/todos/actions";
 import styles from "./TodoItem.module.css";
 
 type TodoItemProps = {
@@ -20,26 +18,61 @@ type TodoItemProps = {
 };
 
 export default function TodoItem({ todo }: TodoItemProps) {
-  // 서버에서 받은 초기값(todo.completed)으로 로컬 state를 시작.
-  // Vue2로 치면 props로 받은 값을 data()의 초기값으로 복사해 쓰는 것과 같은 패턴입니다.
+  // 체크박스 클릭 시 화면 UI를 즉시 바꾸기 위한 로컬 상태 (낙관적 업데이트용)
   const [completed, setCompleted] = useState(todo.completed);
 
+  // useTransition: 백그라운드 작업 처리 및 렉(UI 멈춤) 방지를 위한 React Hook
+  // - isPending (boolean): 백그라운드 작업이 진행 중인지 여부 (진행 중일 때 true)
+  // - startTransition (function): 시간이 걸리는 비동기 작업(서버 요청 등)을 백그라운드용 작업으로 등록하는 함수
+  const [isPending, startTransition] = useTransition();
+
+  // 토글(완료 여부 변경) 핸들러
   function handleToggle() {
-    setCompleted((prev) => !prev);
-    // TODO(5단계): 여기서 서버 액션(toggleTodo)을 호출해 db.json에도 반영할 예정.
+    const next = !completed;
+    
+    // 1. 화면 UI를 멈춤 없이 빠르게 먼저 변경 (낙관적 업데이트)
+    setCompleted(next);
+
+    // 2. startTransition 내부에서 서버 액션 호출 (우선순위가 낮게 백그라운드에서 처리됨)
+    //    작업이 진행되는 동안 isPending은 true 상태가 됩니다.
+    startTransition(async () => {
+      await toggleTodo(todo.id);
+    });
+  }
+
+  // 삭제 핸들러
+  function handleDelete() {
+    // 삭제 요청 동안 브라우저 반응성을 유지하기 위해 startTransition으로 감싸서 백그라운드 처리
+    startTransition(async () => {
+      await deleteTodo(todo.id);
+    });
   }
 
   return (
     <li className={styles.item}>
+      {/* disabled={isPending}: 서버 처리가 진행 중일 때는 중복 클릭 방지를 위해 버튼/체크박스 비활성화 */}
       <input
         type="checkbox"
         checked={completed}
         onChange={handleToggle}
         className={styles.checkbox}
+        disabled={isPending}
       />
+      
+      {/* 완료 상태에 따라 스타일 분기 (취소선 표시 등) */}
       <span className={completed ? styles.titleDone : styles.title}>
         {todo.title}
       </span>
+      
+      {/* 처리 중(isPending === true)일 때는 삭제 버튼도 클릭 불가능하게 비활성화 */}
+      <button
+        type="button"
+        onClick={handleDelete}
+        className={styles.deleteButton}
+        disabled={isPending}
+      >
+        삭제
+      </button>
     </li>
   );
 }
