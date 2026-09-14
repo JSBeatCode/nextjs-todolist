@@ -140,7 +140,7 @@ export default function AddTodoForm() {
         className={styles.button}
 
         disabled={isPending}
-        Todo 추가 중이면 버튼도 비활성화
+        // Todo 추가 중이면 버튼도 비활성화
       >
         {
           isPending
