@@ -16,7 +16,13 @@ import { useSearchParams } from "next/navigation";
 import type { TodoFilter } from "@/lib/data";
 import styles from "./FilterTabs.module.css";
 
-const TABS: { label: string; value: TodoFilter }[] = [
+// 1. 단일 탭 객체의 타입을 먼저 정의
+type TabItem = {
+  label: string;
+  value: TodoFilter;
+};
+
+const TABS: TabItem[] = [
   { label: "전체", value: "all" },
   { label: "진행중", value: "active" },
   { label: "완료", value: "completed" },
