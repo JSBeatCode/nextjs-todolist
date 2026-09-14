@@ -8,17 +8,28 @@
 //   대신 Next.js의 또 다른 캐싱 도구인 unstable_cache / revalidatePath를 5단계에서 다룹니다.
 // - 컴포넌트(TodoList 등)는 db.ts를 직접 import하지 않고 항상 이 파일을 거칩니다.
 //   → "화면은 데이터가 어디서 오는지 몰라도 된다"는 계층 분리 원칙.
-
 import { readTodos } from "./db";
 import type { Todo } from "./types";
 
+export type TodoFilter = "all" | "active" | "completed";
 // 전체 목록 조회
-export async function getTodos(): Promise<Todo[]> {
+export async function getTodos(filter: TodoFilter = "all"): Promise<Todo[]> {
   const todos = await readTodos();
-  // 최신순 정렬 - 이런 "화면에 보여줄 형태로 가공"하는 책임이 data.ts의 역할입니다.
-  return todos.sort(
+  const sorted = todos.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
+
+  if (filter === "active") {
+    return sorted.filter((todo) => !todo.completed);
+  }
+  if (filter === "completed") {
+    return sorted.filter((todo) => todo.completed);
+  }
+  // 최신순 정렬 - 이런 "화면에 보여줄 형태로 가공"하는 책임이 data.ts의 역할입니다.
+  // return todos.sort(
+  //   (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  // );
+  return sorted;
 }
 
 // id로 단건 조회 (6단계 상세 페이지에서 사용 예정 - 지금 미리 만들어둠)
