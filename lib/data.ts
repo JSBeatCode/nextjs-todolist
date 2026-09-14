@@ -11,6 +11,11 @@
 import { readTodos } from "./db";
 import type { Todo } from "./types";
 
+/**
+ * 문자열 리터럴 유니온 타입 (String Literal Union Type)
+ * - 단순 string이 아닌 오직 "all", "active", "completed" 3가지 문자열 값만 허용하도록 제한합니다.
+ * - 필터링 상태 입력 시 오타(예: "actve")를 방지하고, VS Code 등에서 자동 완성 기능을 지원합니다.
+ */
 export type TodoFilter = "all" | "active" | "completed";
 // 전체 목록 조회
 export async function getTodos(filter: TodoFilter = "all"): Promise<Todo[]> {
