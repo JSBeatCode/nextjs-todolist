@@ -58,7 +58,7 @@ export default function FilterTabs() {
     // 탭 전체를 감싸는 nav 태그입니다.
     <nav className={styles.tabs}>
 
-      // TABS 배열의 각 항목을 하나씩 꺼내서 탭을 만듭니다.
+      {/*// TABS 배열의 각 항목을 하나씩 꺼내서 탭을 만듭니다.*/}
       {TABS.map((tab) => {
 
         // 현재 URL의 filter 값과 현재 탭의 value가 같은지 확인합니다.
@@ -84,7 +84,7 @@ export default function FilterTabs() {
             // 선택되지 않은 탭이면 일반 tab CSS를 적용합니다.
             className={isActive ? styles.tabActive : styles.tab}
           >
-            // 실제 화면에 "전체", "진행중", "완료"가 표시됩니다.
+            {/*// 실제 화면에 "전체", "진행중", "완료"가 표시됩니다.*/}
             {tab.label}
           </Link>
         );
