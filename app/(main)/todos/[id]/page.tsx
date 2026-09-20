@@ -25,21 +25,29 @@ type TodoDetailPageProps = {
   params: Promise<{ id: string }>;
 };
 
+// [10단계 메모]
+// - generateMetadata는 Next.js가 특별히 인식하는 함수 이름으로,
+//   해당 라우트의 페이지 Metadata(title, description 등)를 동적으로 생성합니다.
+// - 일반 함수처럼 다른 용도로 사용하면 안 됩니다.
+// - layout.tsx의 metadata를 직접 import하는 것이 아니라,
+//   Next.js가 라우트 계층의 metadata와 generateMetadata를 자동으로 처리하고 조합합니다.
+// Next.js가 자동으로 실행하는 Metadata 생성 함수
 export async function generateMetadata({
-  params,
-}: TodoDetailPageProps): Promise<Metadata> {
-  const { id } = await params;
-  const todo = await getTodoById(id);
+  params, // URL의 [id] 값을 담고 있는 params를 받음
+}: TodoDetailPageProps): Promise<Metadata> { // params의 타입과 반환할 Metadata 타입 지정
+  const { id } = await params; // params에서 Todo의 id를 꺼냄
+  const todo = await getTodoById(id); // id로 Todo 데이터를 조회
 
   if (!todo) {
-    return { title: '찾을 수 없음'}
+    return { title: "찾을 수 없음" }; // Todo가 없으면 이 title을 Metadata로 반환
   }
 
   return {
-    title: todo.title,
-    description: `"${todo.title}" 할 일의 상세 정보입니다.`,
+    title: todo.title, // Todo 제목을 페이지 title로 반환
+    description: `"${todo.title}" 할 일의 상세 정보입니다.`, // 페이지 description을 반환
   };
 }
+
 export default async function TodoDetailPage({ params }: TodoDetailPageProps) {
   const { id } = await params;
   const todo = await getTodoById(id);
