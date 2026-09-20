@@ -21,7 +21,10 @@ type TodoDetailPageProps = {
 export default async function TodoDetailPage({ params }: TodoDetailPageProps) {
   const { id } = await params;
   const todo = await getTodoById(id);
-
+  // const test = undefined;
+  // if (test.data === '1') {
+  //   console.log('123')
+  // }
   if (!todo) {
     notFound();
   }
