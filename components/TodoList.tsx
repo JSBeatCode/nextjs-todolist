@@ -9,6 +9,7 @@
 // 파일 경로 별칭(@/)을 사용해 정의된 Todo 타입과 자식 컴포넌트인 TodoItem을 가져옵니다.
 import type { Todo } from "@/lib/types";
 import TodoItem from "./TodoItem";
+import EmptyState from './EmptyState';
 
 // TypeScript: 부모 컴포넌트로부터 전달받을 props의 타입을 정의합니다.
 // Todo 객체 배열(Todo[])을 todos라는 속성으로 받아옵니다.
@@ -28,19 +29,19 @@ export default function TodoList({ todos }: TodoListProps) {
   if (todos.length === 0) {
     // 빈 상태의 제대로 된 UI(EmptyState, next/image)는 10단계에서 다룹니다.
     // 지금은 최소한의 안내 문구만 둡니다.
-    return <p>할 일이 없습니다.</p>;
+    return <EmptyState />;
   }
 
   // 2. 목록 출력: todos 데이터가 존재할 때 <ul> 태그로 감싸서 리스트 생성
   return (
     <ul>
-      {/* 
+      {/*
         Array.prototype.map()을 순회하며 todos 배열의 각 요소(todo)를 자식 컴포넌트로 변환합니다.
-        
+
         [주석 처리된 이전 코드 메모]
         - 이전에 정적 JSX 요소(<li key={...}>)로 직접 그리던 방식에서,
         - 상호작용(체크박스 토글 등)을 전담할 자식 컴포넌트(<TodoItem />)로 분리했습니다.
-        
+
         [key Prop의 중요성]
         - React가 리스트의 각 항목을 식별하고 효율적으로 업데이트(리렌더링)하기 위해
           고유한 식별자(`todo.id`)를 key prop으로 반드시 넘겨주어야 합니다.
