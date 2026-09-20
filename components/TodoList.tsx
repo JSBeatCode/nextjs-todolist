@@ -29,7 +29,7 @@ export default function TodoList({ todos }: TodoListProps) {
   if (todos.length === 0) {
     // 빈 상태의 제대로 된 UI(EmptyState, next/image)는 10단계에서 다룹니다.
     // 지금은 최소한의 안내 문구만 둡니다.
-    return <EmptyState />;
+    return <EmptyState />; // Todo가 없으면 빈 상태 화면을 보여줌
   }
 
   // 2. 목록 출력: todos 데이터가 존재할 때 <ul> 태그로 감싸서 리스트 생성
