@@ -9,15 +9,37 @@
 //   실행되지 않고 Next.js가 같은 세그먼트의 not-found.tsx를 렌더링합니다.
 // - <Link href="/">로 목록으로 돌아가는 링크를 둡니다. next/link는 <a>와 달리
 //   전체 페이지를 새로고침하지 않고 클라이언트 사이드에서 라우팅합니다.
+// [10단계 메모]
+// - generateMetadata는 이 세그먼트 전용 <title>, <meta description>을 동적으로 만듭니다.
+//   layout.tsx의 title.template("%s | Todo App")과 조합되어
+//   최종적으로 "할 일 제목 | Todo App" 형태로 브라우저 탭에 표시됩니다.
+// - getTodoById를 page와 generateMetadata 양쪽에서 각각 호출하고 있지만, Next.js가
+//   같은 요청 안에서 동일한 함수 호출을 자동으로 메모이제이션(중복 제거)해줍니다.
 
 import { getTodoById } from "@/lib/data";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 type TodoDetailPageProps = {
   params: Promise<{ id: string }>;
 };
 
+export async function generateMetadata({
+  params,
+}: TodoDetailPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const todo = await getTodoById(id);
+
+  if (!todo) {
+    return { title: '찾을 수 없음'}
+  }
+
+  return {
+    title: todo.title,
+    description: `"${todo.title}" 할 일의 상세 정보입니다.`,
+  };
+}
 export default async function TodoDetailPage({ params }: TodoDetailPageProps) {
   const { id } = await params;
   const todo = await getTodoById(id);
