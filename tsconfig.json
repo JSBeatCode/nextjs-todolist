@@ -1,27 +1,58 @@
 {
   "compilerOptions": {
+    // 어떤 JavaScript 버전으로 변환할지 지정
     "target": "ES2017",
+
+    // 사용할 타입 정의(브라우저 API와 최신 JavaScript 기능)
     "lib": ["dom", "dom.iterable", "esnext"],
+
+    // JavaScript 파일도 TypeScript 프로젝트에서 허용
     "allowJs": true,
+
+    // 외부 라이브러리의 타입 검사 생략
     "skipLibCheck": true,
+
+    // 엄격한 TypeScript 타입 검사를 활성화
     "strict": true,
+
+    // TypeScript가 JavaScript 파일을 직접 생성하지 않도록 설정
     "noEmit": true,
+
+    // CommonJS와 ES Module 간의 호환성을 개선
     "esModuleInterop": true,
+
+    // 사용할 모듈 시스템
     "module": "esnext",
+
+    // 번들러(Next.js 등)에 맞는 모듈 해석 방식 사용
     "moduleResolution": "bundler",
+
+    // JSON 파일을 import할 수 있도록 허용
     "resolveJsonModule": true,
+
+    // 파일을 개별적으로 변환할 수 있는 형태인지 검사
     "isolatedModules": true,
+
+    // JSX를 React의 새로운 JSX 변환 방식으로 처리
     "jsx": "react-jsx",
+
+    // 이전 컴파일 결과를 저장하여 다음 TypeScript 검사 속도를 높임
     "incremental": true,
+
+    // Next.js 전용 TypeScript 플러그인 사용
     "plugins": [
       {
         "name": "next"
       }
     ],
+
+    // "@/"로 프로젝트 루트 기준의 경로를 사용할 수 있도록 설정
     "paths": {
       "@/*": ["./*"]
     }
   },
+
+  // TypeScript가 검사할 파일/폴더 범위
   "include": [
     "next-env.d.ts",
     "**/*.ts",
@@ -30,5 +61,7 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
+
+  // TypeScript 검사에서 제외할 폴더
   "exclude": ["node_modules"]
 }
